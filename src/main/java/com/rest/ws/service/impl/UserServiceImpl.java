@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @ComponentScan({"com.rest.ws.io.entity", "com.rest.ws.ui.shared"})
 public class UserServiceImpl implements UserService {
@@ -38,8 +40,9 @@ public class UserServiceImpl implements UserService {
         /**
          * Setting the other properties internally.
          */
+        String uuid = UUID.randomUUID().toString();
         userEntity.setEncryptedPassword("encryptTest1");
-        userEntity.setUserId("test1UserId");
+        userEntity.setUserId(uuid);
         /**
          * Saving the USer Information to the DB
          */
