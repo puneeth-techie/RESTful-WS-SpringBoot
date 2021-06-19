@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -52,5 +53,16 @@ public class UserServiceImpl implements UserService {
          */
         BeanUtils.copyProperties(userEntityDetails, userDto);
         return userDto;
+    }
+
+    @Override
+    public UserDto getUser(String userId) {
+        UserEntity user = userRepo.findByUserId(userId);
+        if(user != null){
+            BeanUtils.copyProperties(user, userDto);
+            return userDto;
+        }else {
+            throw new RuntimeException("User with the given ID not exist.");
+        }
     }
 }

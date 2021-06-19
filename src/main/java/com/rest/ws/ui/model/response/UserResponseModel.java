@@ -1,5 +1,8 @@
 package com.rest.ws.ui.model.response;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class UserResponseModel {
     private String userId;
     private String firstName;
