@@ -1,8 +1,11 @@
 package com.rest.ws.io.entity;
 
+import org.springframework.stereotype.Component;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Component
 @Entity
 @Table(name = "users")
 public class UserEntity implements Serializable {
@@ -15,6 +18,7 @@ public class UserEntity implements Serializable {
 
     private String firstName;
     private String lastName;
+    @Column(nullable = false)
     private String email;
     private String password;
     @Column(nullable = false)
