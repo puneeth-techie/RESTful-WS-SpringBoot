@@ -92,7 +92,7 @@ public class UserEntity implements Serializable {
         this.emailVerificationToken = emailVerificationToken;
     }
 
-    public boolean getEmailVerificationStatus() {
+    public boolean isEmailVerificationStatus() {
         return emailVerificationStatus;
     }
 
