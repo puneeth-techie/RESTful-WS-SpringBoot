@@ -7,9 +7,12 @@ import com.rest.ws.shared.dto.UserDto;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+
 import java.util.UUID;
 
 @Service
@@ -24,6 +27,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDto userDto;
+
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDto createUser(UserDto userDetails) {
@@ -42,7 +48,11 @@ public class UserServiceImpl implements UserService {
          * Setting the other properties internally.
          */
         String uuid = UUID.randomUUID().toString();
-        userEntity.setEncryptedPassword("encryptTest1");
+        /**
+         * Encoding User Password using BcryptPasswordEncoder
+         */
+        String encodedPassword = bCryptPasswordEncoder.encode(userDetails.getPassword());
+        userEntity.setEncryptedPassword(encodedPassword);
         userEntity.setUserId(uuid);
         /**
          * Saving the USer Information to the DB
@@ -64,5 +74,10 @@ public class UserServiceImpl implements UserService {
         }else {
             throw new RuntimeException("User with the given ID not exist.");
         }
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return null;
     }
 }
