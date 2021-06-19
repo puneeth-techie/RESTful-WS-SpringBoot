@@ -1,17 +1,31 @@
-package com.rest.ws.shared.dto;
+package com.rest.ws.io.entity;
 
+import org.springframework.data.annotation.Id;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Table;
 import java.io.Serializable;
 
-public class UserDto implements Serializable {
-    //private static final long serialVersionUID = 1L;
+@Entity
+@Table(name = "users")
+public class UserEntity implements Serializable {
+    @Id
+    @GeneratedValue
     private long id;
+
+    @Column(nullable = false)
     private String userId;
+
     private String firstName;
     private String lastName;
     private String email;
     private String password;
+    @Column(nullable = false)
     private String encryptedPassword;
     private String emailVerificationToken;
+    @Column(nullable = false)
     private boolean emailVerificationStatus = false;
 
     public long getId() {
@@ -78,7 +92,7 @@ public class UserDto implements Serializable {
         this.emailVerificationToken = emailVerificationToken;
     }
 
-    public boolean isEmailVerificationStatus() {
+    public boolean getEmailVerificationStatus() {
         return emailVerificationStatus;
     }
 
