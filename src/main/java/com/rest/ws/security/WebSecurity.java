@@ -43,4 +43,15 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
          */
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
+
+//    /**
+//     * Customized Authentication Filter Login URL -> "/user/login"
+//     * @return
+//     * @throws Exception
+//     */
+//    public AuthenticationFilter getAuthenticationFilter() throws Exception {
+//        final AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
+//        filter.setFilterProcessesUrl("/user/login");
+//        return filter;
+//    }
 }
