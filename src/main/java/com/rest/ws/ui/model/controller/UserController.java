@@ -22,7 +22,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public UserResponseModel getUser(@PathVariable String userId){
-        UserDto user = userService.getUser(userId);
+        UserDto user = userService.getUserById(userId);
         BeanUtils.copyProperties(user, userResponseModel);
         return userResponseModel;
     }
