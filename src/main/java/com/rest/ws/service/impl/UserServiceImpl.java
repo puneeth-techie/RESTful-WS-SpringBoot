@@ -68,13 +68,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUser(String userId) {
-        UserEntity user = userRepo.findByUserId(userId);
+    public UserDto getUser(String email) {
+        UserEntity user = userRepo.findByEmail(email);
         if(user != null){
             BeanUtils.copyProperties(user, userDto);
             return userDto;
         }else {
-            throw new RuntimeException("User with the given ID not exist.");
+            throw new UsernameNotFoundException("The the given email id not found.");
         }
     }
 
