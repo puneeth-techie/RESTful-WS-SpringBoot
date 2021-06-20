@@ -20,15 +20,27 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        /**
+         * Configuring the http security by allowing register URL i,e. /users
+         * apart from any request should be authenticated using our Authentication Filter
+         * Passing Authentication manager as an argument
+         */
         http
                 .csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SecurityConstants.SIGN_UP_URL)
                 .permitAll()
-                .anyRequest().authenticated();
+                .anyRequest()
+                .authenticated()
+                .and()
+                .addFilter(new AuthenticationFilter(authenticationManager()));
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        /**
+         * Passing our User Service and the Password encryption type to
+         * AuthenticationManagerBuilder
+         */
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
     }
 }
