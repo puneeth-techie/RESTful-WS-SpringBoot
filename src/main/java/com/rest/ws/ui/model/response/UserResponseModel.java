@@ -2,8 +2,14 @@ package com.rest.ws.ui.model.response;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * User response model which will be prompting when the user successfully registered.
+ */
 @Component
 public class UserResponseModel {
+    /**
+     * Requested user information for registration.
+     */
     private String userId;
     private String firstName;
     private String lastName;

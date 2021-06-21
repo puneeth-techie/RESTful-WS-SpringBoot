@@ -2,6 +2,9 @@ package com.rest.ws.ui.model.response;
 
 import java.util.Date;
 
+/**
+ * Blueprint class for the response error message.
+ */
 public class ErrorMessage {
     private Date timestamp;
     private String message;
