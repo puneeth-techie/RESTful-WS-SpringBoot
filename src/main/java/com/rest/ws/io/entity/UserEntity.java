@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Component
 @Entity
@@ -26,6 +27,9 @@ public class UserEntity implements Serializable {
     private String emailVerificationToken;
     @Column(nullable = false)
     private boolean emailVerificationStatus = false;
+
+    @OneToMany(mappedBy = "userDetail", cascade = CascadeType.ALL)
+    private List<AddressEntity> address;
 
     public long getId() {
         return id;
