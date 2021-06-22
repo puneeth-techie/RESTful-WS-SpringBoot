@@ -1,6 +1,7 @@
 package com.rest.ws.service.impl;
 
 import com.rest.ws.exception.UserServiceException;
+import com.rest.ws.io.entity.UserEntity;
 import com.rest.ws.repository.UserRepo;
 import com.rest.ws.service.UserService;
 import com.rest.ws.shared.dto.AddressDto;
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
         /**
          * Saving the USer Information to the DB
          */
-        com.rest.ws.io.entity.UserEntity userEntityDetails = userRepo.save(userEntity);
+        UserEntity userEntityDetails = userRepo.save(userEntity);
         /**
          * Copying the Saved UserEntity to UserDto
          */
@@ -112,7 +113,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void deleteUser(String userId) {
-        com.rest.ws.io.entity.UserEntity userPresent = userRepo.findByUserId(userId);
+        UserEntity userPresent = userRepo.findByUserId(userId);
         if(userPresent == null) throw new UserServiceException(ErrorMessages.NO_USER_ID_FOUND);
         userRepo.delete(userPresent);
     }
@@ -127,9 +128,9 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> getAllUser(int page, int limit) {
         ArrayList<UserDto> userDtos = new ArrayList<>();
         Pageable userPage = PageRequest.of(page, limit);
-        Page<com.rest.ws.io.entity.UserEntity> allUsers = userRepo.findAll(userPage);
-        List<com.rest.ws.io.entity.UserEntity> usersList = allUsers.getContent();
-        for (com.rest.ws.io.entity.UserEntity userEntity: usersList){
+        Page<UserEntity> allUsers = userRepo.findAll(userPage);
+        List<UserEntity> usersList = allUsers.getContent();
+        for (UserEntity userEntity: usersList){
             BeanUtils.copyProperties(userEntity, userDto);
             userDtos.add(userDto);
         }
@@ -143,7 +144,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDto getUser(String email) {
-        com.rest.ws.io.entity.UserEntity user = userRepo.findByEmail(email);
+        UserEntity user = userRepo.findByEmail(email);
         if(user != null){
             BeanUtils.copyProperties(user, userDto);
             return userDto;
@@ -160,7 +161,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.rest.ws.io.entity.UserEntity userPresent = userRepo.findByEmail(email);
+        UserEntity userPresent = userRepo.findByEmail(email);
         if(userPresent == null) throw new UsernameNotFoundException("The the given email id not found.");
         return new User(userPresent.getEmail(), userPresent.getEncryptedPassword(), new ArrayList<>());
     }
