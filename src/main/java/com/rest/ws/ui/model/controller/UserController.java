@@ -65,8 +65,8 @@ public class UserController {
     public UserResponseModel createUser(@RequestBody UserRequestModel userDetails) {
         //BeanUtils.copyProperties(userDetails, userDto);
         ModelMapper modelMapper = new ModelMapper();
-        modelMapper.map(userDetails, userDto);
-        UserDto createdUser = userService.createUser(userDto);
+        UserDto userMapped = modelMapper.map(userDetails, UserDto.class);
+        UserDto createdUser = userService.createUser(userMapped);
         BeanUtils.copyProperties(createdUser, userResponseModel);
         return userResponseModel;
     }
