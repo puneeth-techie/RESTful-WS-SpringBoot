@@ -1,9 +1,12 @@
 package com.rest.ws.service.impl;
 
+import com.rest.ws.exception.UserServiceException;
 import com.rest.ws.io.entity.UserEntity;
 import com.rest.ws.repository.UserRepo;
 import com.rest.ws.service.UserService;
 import com.rest.ws.shared.dto.UserDto;
+import com.rest.ws.ui.model.response.ErrorMessages;
+import com.rest.ws.ui.model.response.OperationResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -74,6 +77,13 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User with the given ID not found.");
         BeanUtils.copyProperties(user, userDto);
         return userDto;
+    }
+
+    @Override
+    public void deleteUser(String userId) {
+        UserEntity userPresent = userRepo.findByUserId(userId);
+        if(userPresent == null) throw new UserServiceException(ErrorMessages.NO_USER_ID_FOUND);
+        userRepo.delete(userPresent);
     }
 
     @Override
