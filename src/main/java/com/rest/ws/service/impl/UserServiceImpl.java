@@ -8,7 +8,6 @@ import com.rest.ws.shared.dto.AddressDto;
 import com.rest.ws.shared.dto.UserDto;
 import com.rest.ws.ui.model.response.ErrorMessages;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
     UserRepo userRepo;
 
     @Autowired
-    com.rest.ws.io.entity.UserEntity userEntity;
+    UserEntity userEntity;
 
     @Autowired
     UserDto userDto;
@@ -54,7 +53,7 @@ public class UserServiceImpl implements UserService {
         /**
          * Checking if the use is already exist with the given email or not.
          */
-        com.rest.ws.io.entity.UserEntity isEmailPresent = userRepo.findByEmail(userDetails.getEmail());
+        UserEntity isEmailPresent = userRepo.findByEmail(userDetails.getEmail());
         if(isEmailPresent != null) throw new RuntimeException("Email already exist.");
 
         String addressId = UUID.randomUUID().toString();
@@ -63,6 +62,7 @@ public class UserServiceImpl implements UserService {
 
         for (int i = 0; i < userDetails.getAddress().size() ; i++){
             AddressDto address = userDetails.getAddress().get(i);
+            System.out.println(address);
             address.setUserDetail(userDetails);
             address.setAddressId(addressId);
             userDetails.getAddress().set(i, address);
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
          * Copying the UserDto properties to UserEntity.
          */
         //BeanUtils.copyProperties(userDetails, userEntity);
-        com.rest.ws.io.entity.UserEntity mappedUser = modelMapper.map(userDetails, com.rest.ws.io.entity.UserEntity.class);
+        UserEntity mappedUser = modelMapper.map(userDetails, UserEntity.class);
         /**
          * Setting the other properties internally.
          */
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
         /**
          * Saving the USer Information to the DB
          */
-        UserEntity userEntityDetails = userRepo.save(userEntity);
+        UserEntity userEntityDetails = userRepo.save(mappedUser);
         /**
          * Copying the Saved UserEntity to UserDto
          */
@@ -163,7 +163,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity userPresent = userRepo.findByEmail(email);
-        if(userPresent == null) throw new UsernameNotFoundException("The the given email id not found.");
-        return new User(userPresent.getEmail(), userPresent.getEncryptedPassword(), new ArrayList<>());
+        if(userPresent != null)
+            return new User(userPresent.getEmail(), userPresent.getEncryptedPassword(), new ArrayList<>());
+        throw new UsernameNotFoundException("The the given email id not found.");
     }
 }

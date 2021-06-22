@@ -8,6 +8,6 @@ public class UserServiceException extends RuntimeException {
      * @param errorMessage
      */
     public UserServiceException(ErrorMessages errorMessage){
-        super(errorMessage);
+        super(String.valueOf(errorMessage));
     }
 }

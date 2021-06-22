@@ -7,7 +7,6 @@ import com.rest.ws.ui.model.response.OperationNames;
 import com.rest.ws.ui.model.response.OperationResult;
 import com.rest.ws.ui.model.response.UserResponseModel;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +47,7 @@ public class UserController {
      * @return
      */
     @GetMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public List<UserResponseModel> getAllUser(@RequestParam(value = "page", defaultValue = "1") int page, @RequestParam(value = "limit", defaultValue = "25") int limit){
+    public List<UserResponseModel> getAllUser(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "limit", defaultValue = "25") int limit){
         ArrayList<UserResponseModel> userResponseModels = new ArrayList<>();
         List<UserDto> allUser = userService.getAllUser(page, limit);
         for (UserDto userDto: allUser) {
