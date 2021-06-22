@@ -90,4 +90,12 @@ public class UserDto implements Serializable {
     public void setEmailVerificationStatus(boolean emailVerificationStatus) {
         this.emailVerificationStatus = emailVerificationStatus;
     }
+
+    public List<AddressDto> getAddress() {
+        return address;
+    }
+
+    public void setAddress(List<AddressDto> address) {
+        this.address = address;
+    }
 }

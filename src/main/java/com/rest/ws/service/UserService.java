@@ -1,7 +1,6 @@
 package com.rest.ws.service;
 
 import com.rest.ws.shared.dto.UserDto;
-import com.rest.ws.ui.model.response.OperationResult;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;

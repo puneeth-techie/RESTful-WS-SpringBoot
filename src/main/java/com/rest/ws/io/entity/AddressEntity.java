@@ -20,7 +20,7 @@ public class AddressEntity implements Serializable {
     private String type;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserDto userDetail;
+    private UserEntity userDetail;
 
     public long getId() {
         return id;
@@ -78,11 +78,11 @@ public class AddressEntity implements Serializable {
         this.type = type;
     }
 
-    public UserDto getUserDetail() {
+    public UserEntity getUserDetail() {
         return userDetail;
     }
 
-    public void setUserDetail(UserDto userDetail) {
+    public void setUserDetail(UserEntity userDetail) {
         this.userDetail = userDetail;
     }
 }

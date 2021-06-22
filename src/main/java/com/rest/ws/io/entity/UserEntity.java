@@ -102,4 +102,5 @@ public class UserEntity implements Serializable {
     public void setEmailVerificationStatus(boolean emailVerificationStatus) {
         this.emailVerificationStatus = emailVerificationStatus;
     }
+
 }
