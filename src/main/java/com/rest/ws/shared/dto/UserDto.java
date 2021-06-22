@@ -3,6 +3,7 @@ package com.rest.ws.shared.dto;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Component
 public class UserDto implements Serializable {
@@ -16,6 +17,7 @@ public class UserDto implements Serializable {
     private String encryptedPassword;
     private String emailVerificationToken;
     private boolean emailVerificationStatus = false;
+    private List<AddressDto> address;
 
     public long getId() {
         return id;
