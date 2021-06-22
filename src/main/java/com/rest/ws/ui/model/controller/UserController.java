@@ -21,11 +21,13 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @Autowired
-    UserDto userDto;
+//    @Autowired
+//    UserDto userDto;
+//
+//    @Autowired
+//    UserResponseModel userResponseModel;
 
-    @Autowired
-    UserResponseModel userResponseModel;
+    ModelMapper modelMapper = new ModelMapper();
 
     /**
      * Fetching the User Record using userId.
@@ -35,8 +37,8 @@ public class UserController {
     @GetMapping(value = "/{userId}", produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public UserResponseModel getUser(@PathVariable String userId){
         UserDto user = userService.getUserById(userId);
-        BeanUtils.copyProperties(user, userResponseModel);
-        return userResponseModel;
+        UserResponseModel response = modelMapper.map(user, UserResponseModel.class);
+        return response;
     }
 
     /**
@@ -50,8 +52,8 @@ public class UserController {
         ArrayList<UserResponseModel> userResponseModels = new ArrayList<>();
         List<UserDto> allUser = userService.getAllUser(page, limit);
         for (UserDto userDto: allUser) {
-            BeanUtils.copyProperties(userDto, userResponseModel);
-            userResponseModels.add(userResponseModel);
+            UserResponseModel response = modelMapper.map(userDto, UserResponseModel.class);
+            userResponseModels.add(response);
         }
         return userResponseModels;
     }
@@ -64,11 +66,10 @@ public class UserController {
     @PostMapping(produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public UserResponseModel createUser(@RequestBody UserRequestModel userDetails) {
         //BeanUtils.copyProperties(userDetails, userDto);
-        ModelMapper modelMapper = new ModelMapper();
         UserDto userMapped = modelMapper.map(userDetails, UserDto.class);
         UserDto createdUser = userService.createUser(userMapped);
-        BeanUtils.copyProperties(createdUser, userResponseModel);
-        return userResponseModel;
+        UserResponseModel response = modelMapper.map(createdUser, UserResponseModel.class);
+        return response;
     }
 
     /**
