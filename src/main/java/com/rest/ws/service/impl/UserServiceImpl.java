@@ -41,6 +41,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    ModelMapper modelMapper = new ModelMapper();
+
     /**
      * Creating or Registering a new user.
      * @param userDetails
@@ -49,7 +51,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDetails) {
         //UserEntity userEntity = new UserEntity();
-        ModelMapper modelMapper = new ModelMapper();
         /**
          * Checking if the use is already exist with the given email or not.
          */
@@ -89,8 +90,8 @@ public class UserServiceImpl implements UserService {
         /**
          * Copying the Saved UserEntity to UserDto
          */
-        BeanUtils.copyProperties(userEntityDetails, userDto);
-        return userDto;
+        UserDto response = modelMapper.map(userEntityDetails, UserDto.class);
+        return response;
     }
 
     /**
@@ -100,11 +101,11 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserDto getUserById(String userId) {
-        com.rest.ws.io.entity.UserEntity user = userRepo.findByUserId(userId);
+        UserEntity user = userRepo.findByUserId(userId);
         if (user == null)
             throw new RuntimeException("User with the given ID not found.");
-        BeanUtils.copyProperties(user, userDto);
-        return userDto;
+        UserDto response = modelMapper.map(user, UserDto.class);
+        return response;
     }
 
     /**
@@ -131,8 +132,8 @@ public class UserServiceImpl implements UserService {
         Page<UserEntity> allUsers = userRepo.findAll(userPage);
         List<UserEntity> usersList = allUsers.getContent();
         for (UserEntity userEntity: usersList){
-            BeanUtils.copyProperties(userEntity, userDto);
-            userDtos.add(userDto);
+            UserDto response = modelMapper.map(userEntity, UserDto.class);
+            userDtos.add(response);
         }
         return userDtos;
     }
@@ -146,8 +147,8 @@ public class UserServiceImpl implements UserService {
     public UserDto getUser(String email) {
         UserEntity user = userRepo.findByEmail(email);
         if(user != null){
-            BeanUtils.copyProperties(user, userDto);
-            return userDto;
+            UserDto response = modelMapper.map(user, UserDto.class);
+            return response;
         }else {
             throw new UsernameNotFoundException("The the given email id not found.");
         }
