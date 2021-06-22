@@ -10,6 +10,9 @@ import com.rest.ws.ui.model.response.OperationResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,6 +40,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * Creating or Registering a new user.
+     * @param userDetails
+     * @return
+     */
     @Override
     public UserDto createUser(UserDto userDetails) {
         //UserEntity userEntity = new UserEntity();
@@ -70,6 +79,11 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    /**
+     * Fetching user by their userId.
+     * @param userId
+     * @return
+     */
     @Override
     public UserDto getUserById(String userId) {
         UserEntity user = userRepo.findByUserId(userId);
@@ -79,6 +93,10 @@ public class UserServiceImpl implements UserService {
         return userDto;
     }
 
+    /**
+     * Deleting a specific user by their userId.
+     * @param userId
+     */
     @Override
     public void deleteUser(String userId) {
         UserEntity userPresent = userRepo.findByUserId(userId);
@@ -86,6 +104,30 @@ public class UserServiceImpl implements UserService {
         userRepo.delete(userPresent);
     }
 
+    /**
+     * Fetching the all users as list of users.
+     * @param page
+     * @param limit
+     * @return
+     */
+    @Override
+    public List<UserDto> getAllUser(int page, int limit) {
+        ArrayList<UserDto> userDtos = new ArrayList<>();
+        Pageable userPage = PageRequest.of(page, limit);
+        Page<UserEntity> allUsers = userRepo.findAll(userPage);
+        List<UserEntity> usersList = allUsers.getContent();
+        for (UserEntity userEntity: usersList){
+            BeanUtils.copyProperties(userEntity, userDto);
+            userDtos.add(userDto);
+        }
+        return userDtos;
+    }
+
+    /**
+     * Fetching user by their email.
+     * @param email
+     * @return
+     */
     @Override
     public UserDto getUser(String email) {
         UserEntity user = userRepo.findByEmail(email);
@@ -97,6 +139,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Loading the valid user to Spring security User credentials
+     * @param email
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity userPresent = userRepo.findByEmail(email);
