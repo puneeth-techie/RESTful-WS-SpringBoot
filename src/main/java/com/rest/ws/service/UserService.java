@@ -40,4 +40,6 @@ public interface UserService extends UserDetailsService {
      * @return
      */
     List<UserDto> getAllUser(int page, int limit);
+    
+    boolean verifyEmailToken(String token);
 }

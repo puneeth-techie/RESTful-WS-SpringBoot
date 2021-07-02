@@ -84,4 +84,15 @@ public class UserController {
         operationResult.setOperationStatus(OperationNames.SUCCESS.name());
         return operationResult;
     }
+
+    // http://localhost:4000/users/email-verification?token=sdfsdkfjiurefihfod
+    @GetMapping(path = "/email-verification")
+    public void verifyEmailToken (@RequestParam (value = "token") String token) {
+        boolean isVerified = userService.verifyEmailToken(token);
+        if (isVerified == true) {
+            System.out.println("Verification successful");
+        }else{
+            System.out.println("Verification Failed");
+        }
+    }
 }
